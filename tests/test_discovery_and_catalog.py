@@ -87,9 +87,20 @@ class TestDiscoveryToArtifact:
 
     def test_model_cannot_claim_success_it_cannot_show(self, surface, policy, app_url, tmp_path):
         script = savings_balance_script()
-        script[-1]["args"]["checkpoint_text"] = "Totally Not On Screen"
+        bad = dict(script[-1]); bad["args"] = {**bad["args"], "checkpoint_text": "Totally Not On Screen"}
+        script.insert(len(script) - 1, bad)          # first `done` lies, second quotes the screen
         r = make_agent(surface, policy, app_url, tmp_path, script, {"member_id": "12345"}).run(GOAL)
-        assert r.status == "FAILED" and "checkpoint" in r.detail
+        assert r.status == "SUCCESS"
+        ev = open(f"{r.evidence_dir}/run.jsonl").read()
+        assert '"agent.done_rejected"' in ev and "Totally Not On Screen" in ev
+        assert r.capability.checkpoint.expect.text_visible == "Current Balance"
+
+    def test_model_that_never_shows_success_fails(self, surface, policy, app_url, tmp_path):
+        script = savings_balance_script()
+        script[-1]["args"]["checkpoint_text"] = "Totally Not On Screen"
+        script.append({"tool": "stuck", "args": {"reason": "cannot prove it"}})
+        r = make_agent(surface, policy, app_url, tmp_path, script, {"member_id": "12345"}).run(GOAL)
+        assert r.status == "STUCK"
 
 
 class TestEnrichment:

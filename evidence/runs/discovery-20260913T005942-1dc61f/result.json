@@ -1,0 +1,9 @@
+{
+  "status": "SUCCESS",
+  "detail": "",
+  "artifact": "artifacts/meridian_core.open_regular_savings_subaccount.v1.json",
+  "model": "claude-sonnet-5",
+  "model_calls": 11,
+  "actions": 12,
+  "interventions": 1
+}

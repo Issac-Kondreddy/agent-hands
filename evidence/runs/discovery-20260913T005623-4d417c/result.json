@@ -1,0 +1,9 @@
+{
+  "status": "ENRICHED",
+  "detail": "BUSINESS_OUTCOME: MEMBER_NOT_FOUND",
+  "artifact": "artifacts/meridian_core.member_savings_balance.v2.json",
+  "model": "claude-sonnet-5",
+  "model_calls": 7,
+  "actions": 7,
+  "interventions": 0
+}

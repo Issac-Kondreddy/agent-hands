@@ -1,0 +1,571 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "meridian_core.open_regular_savings_subaccount",
+  "version": 2,
+  "status": "approved",
+  "title": "Open Regular Savings Sub-Account",
+  "description": "Opens a new Regular Savings sub-account for a given member with a specified nickname and initial deposit, confirms the transaction, and returns the new account number from the confirmation screen.",
+  "app_id": "meridian_core",
+  "surface": "legacy_web",
+  "entry_point": "http://127.0.0.1:5055/t/meridian/",
+  "recorded_on_tenant": "meridian",
+  "recorded_with_model": "claude-sonnet-5",
+  "recorded_at": "2026-09-13T01:00:05+00:00",
+  "parameters": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "description": "5-digit member number",
+      "required": true,
+      "pattern": "\\d{5}",
+      "sensitive": false
+    },
+    {
+      "name": "nickname",
+      "type": "string",
+      "description": "display name for the new account",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "deposit",
+      "type": "string",
+      "description": "initial deposit in USD",
+      "required": true,
+      "sensitive": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "new_account_number",
+      "type": "string",
+      "description": "The newly created Regular Savings sub-account number shown on the confirmation screen",
+      "sensitive": false
+    }
+  ],
+  "outcomes": [
+    {
+      "code": "DEPOSIT_BELOW_MINIMUM",
+      "description": "The initial deposit amount entered is below the required minimum of $25.00 for opening a new sub-account, so the system rejects the request and the account cannot be opened."
+    }
+  ],
+  "preconditions": [
+    "secrets available: MERIDIAN_DEMO_PASS, MERIDIAN_DEMO_USER"
+  ],
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "target": {
+        "anchor_id": "operator_id_textbox",
+        "role": "textbox",
+        "name": "Operator ID",
+        "label": "Operator ID",
+        "frame": [],
+        "bbox": [
+          511.3,
+          103.0,
+          185.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${secret:MERIDIAN_DEMO_USER}",
+      "risk": "reversible",
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Enter operator ID",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "target": {
+        "anchor_id": "password_textbox",
+        "role": "textbox",
+        "name": "Password",
+        "label": "Password",
+        "frame": [],
+        "bbox": [
+          511.3,
+          148.0,
+          185.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${secret:MERIDIAN_DEMO_PASS}",
+      "risk": "reversible",
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Enter password",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "target": {
+        "anchor_id": "sign_on_button",
+        "role": "button",
+        "name": "Sign On",
+        "frame": [],
+        "bbox": [
+          632.1,
+          193.0,
+          64.2,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "MEMBER SERVICES",
+        "timeout_ms": 8000
+      },
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Sign on",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "target": {
+        "anchor_id": "member_lookup_link",
+        "role": "link",
+        "name": "Member Lookup",
+        "frame": [
+          "menu"
+        ],
+        "bbox": [
+          12.0,
+          82.0,
+          115.6,
+          17.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "read_only",
+      "expect": {
+        "role_visible": {
+          "anchor_id": "expect_member_number_textbox",
+          "role": "textbox",
+          "name": "Member Number",
+          "frame": [
+            "main"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Go to Member Lookup",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "target": {
+        "anchor_id": "member_number_textbox",
+        "role": "textbox",
+        "name": "Member Number",
+        "label": "Member Number",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          150.5,
+          51.0,
+          121.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${member_id}",
+      "risk": "reversible",
+      "description": "Enter member number",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s06_search_for_member",
+      "action": "click",
+      "target": {
+        "anchor_id": "search_button",
+        "role": "button",
+        "name": "Search",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          281.5,
+          51.0,
+          58.2,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "Member Detail",
+        "timeout_ms": 8000
+      },
+      "description": "Search for member",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s07_open_new_sub_account",
+      "action": "click",
+      "target": {
+        "anchor_id": "open_sub_account_button",
+        "role": "button",
+        "name": "Open Sub-Account",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          16.0,
+          231.0,
+          128.6,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "Open Sub-Account",
+        "timeout_ms": 8000
+      },
+      "description": "Open new sub-account",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s08_enter_nickname",
+      "action": "type",
+      "target": {
+        "anchor_id": "account_nickname_textbox",
+        "role": "textbox",
+        "name": "Account Nickname",
+        "label": "Account Nickname",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          163.8,
+          108.0,
+          217.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${nickname}",
+      "risk": "reversible",
+      "description": "Enter nickname",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s09_enter_initial_deposit",
+      "action": "type",
+      "target": {
+        "anchor_id": "initial_deposit_textbox",
+        "role": "textbox",
+        "name": "Initial Deposit",
+        "label": "Initial Deposit",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          177.2,
+          139.0,
+          105.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${deposit}",
+      "risk": "reversible",
+      "description": "Enter initial deposit",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s10_continue_to_confirmation",
+      "action": "click",
+      "target": {
+        "anchor_id": "continue_button",
+        "role": "button",
+        "name": "Continue",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          163.8,
+          170.0,
+          69.4,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "Review New Sub-Account",
+        "timeout_ms": 8000
+      },
+      "description": "Continue to confirmation",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s11_confirm_and_open_the_sub",
+      "action": "click",
+      "target": {
+        "anchor_id": "confirm_open_button",
+        "role": "button",
+        "name": "Confirm & Open",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          16.0,
+          231.0,
+          111.6,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "irreversible",
+      "expect": {
+        "text_visible": "Sub-Account Opened",
+        "timeout_ms": 8000
+      },
+      "description": "Confirm and open the sub-account",
+      "requires_human_approval": true
+    },
+    {
+      "step_id": "s12_the_newly_created_regula",
+      "action": "read",
+      "target": {
+        "anchor_id": "new_account_number_cell",
+        "role": "cell",
+        "label": "New Account Number",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          186.7,
+          116.0,
+          194.1,
+          28.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Value cell to the right of the label 'New Account Number'; label text is stable, the value is not"
+      },
+      "output": "new_account_number",
+      "risk": "read_only",
+      "description": "The newly created Regular Savings sub-account number shown on the confirmation screen",
+      "requires_human_approval": false
+    }
+  ],
+  "checkpoint": {
+    "description": "'Sub-Account Opened' is visible",
+    "expect": {
+      "text_visible": "Sub-Account Opened",
+      "timeout_ms": 8000
+    }
+  },
+  "conditions": [
+    {
+      "rule_id": "deposit_below_minimum",
+      "kind": "business_outcome",
+      "match": {
+        "text_pattern": "Initial Deposit must be at least \\$25\\.00\\."
+      },
+      "response": {
+        "kind": "return_outcome",
+        "outcome_code": "DEPOSIT_BELOW_MINIMUM",
+        "max_attempts": 2,
+        "wait_ms": 1000,
+        "message_capture": "(Initial Deposit must be at least \\$25\\.00\\.)"
+      },
+      "description": "The initial deposit amount entered is below the required minimum of $25.00 for opening a new sub-account, so the system rejects the request and the account cannot be opened."
+    },
+    {
+      "rule_id": "maintenance_notice",
+      "kind": "recoverable",
+      "match": {
+        "text_pattern": "System Notice"
+      },
+      "response": {
+        "kind": "dismiss",
+        "dismiss_target": {
+          "anchor_id": "ack_button",
+          "role": "button",
+          "name": "Acknowledge",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "max_attempts": 2,
+        "wait_ms": 1000
+      },
+      "description": "Once-per-session maintenance interstitial; acknowledge and continue"
+    },
+    {
+      "rule_id": "session_expired",
+      "kind": "recoverable",
+      "match": {
+        "text_pattern": "Session Expired"
+      },
+      "response": {
+        "kind": "run_recovery",
+        "recovery_block": "re_signon",
+        "resume_from_step": "s04_go_to_member_lookup",
+        "max_attempts": 1,
+        "wait_ms": 1000
+      },
+      "description": "Operator session timed out; sign on again and resume the flow from its first post-sign-on step"
+    },
+    {
+      "rule_id": "signed_off",
+      "kind": "hard_failure",
+      "match": {
+        "text_pattern": "Invalid operator credentials"
+      },
+      "response": {
+        "kind": "fail",
+        "outcome_code": "AUTH_FAILED",
+        "max_attempts": 2,
+        "wait_ms": 1000
+      },
+      "description": "Sign-on rejected — credentials are wrong; a person must fix configuration"
+    }
+  ],
+  "recovery_blocks": {
+    "re_signon": [
+      {
+        "step_id": "rs_return",
+        "action": "click",
+        "target": {
+          "anchor_id": "return_to_signon",
+          "role": "link",
+          "name": "Return to Sign On",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "risk": "read_only",
+        "expect": {
+          "role_visible": {
+            "anchor_id": "sign_on_button",
+            "role": "button",
+            "name": "Sign On",
+            "frame": [],
+            "allow_geometric_fallback": false
+          },
+          "timeout_ms": 8000
+        },
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_user",
+        "action": "type",
+        "target": {
+          "anchor_id": "operator_id_input",
+          "role": "textbox",
+          "name": "Operator ID",
+          "label": "Operator ID",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "value": "${secret:MERIDIAN_DEMO_USER}",
+        "risk": "reversible",
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_pass",
+        "action": "type",
+        "target": {
+          "anchor_id": "password_input",
+          "role": "textbox",
+          "name": "Password",
+          "label": "Password",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "value": "${secret:MERIDIAN_DEMO_PASS}",
+        "risk": "reversible",
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_submit",
+        "action": "click",
+        "target": {
+          "anchor_id": "sign_on_button",
+          "role": "button",
+          "name": "Sign On",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "risk": "reversible",
+        "expect": {
+          "role_visible": {
+            "anchor_id": "signed_on_menu",
+            "role": "link",
+            "name": "Member Lookup",
+            "frame": [
+              "menu"
+            ],
+            "allow_geometric_fallback": false
+          },
+          "timeout_ms": 8000
+        },
+        "description": "",
+        "requires_human_approval": false
+      }
+    ]
+  },
+  "max_risk": "irreversible",
+  "notes": [
+    "draft: review anchors and rules before approval",
+    "v2: learned ['deposit_below_minimum'] from run discovery-20260913T010006-bdb062",
+    "approved v2 by isaac"
+  ]
+}

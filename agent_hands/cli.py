@@ -64,7 +64,7 @@ def _apply_chaos(surface: PlaywrightSurface, flags: list[str]):
     surface.page.goto(DEFAULT_BASE + "/__health")
     body = "&".join(flags)
     surface.page.evaluate("b => fetch('/__chaos', {method:'POST', body:b, headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then(r=>r.text())", body)
-    print(f"chaos injected: {body}")
+    print(f"chaos injected: {body}", file=sys.stderr)
 
 
 def cmd_discover(args):

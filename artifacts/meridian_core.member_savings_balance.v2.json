@@ -1,0 +1,461 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "meridian_core.member_savings_balance",
+  "version": 2,
+  "status": "approved",
+  "title": "Look up member and read regular savings balance and name",
+  "description": "Logs into Meridian Core, navigates to Member Lookup, searches by member number, and reads the member's full name and current regular savings account balance from the Member Detail screen.",
+  "app_id": "meridian_core",
+  "surface": "legacy_web",
+  "entry_point": "http://127.0.0.1:5055/t/meridian/",
+  "recorded_on_tenant": "meridian",
+  "recorded_with_model": "claude-sonnet-5",
+  "recorded_at": "2026-09-13T00:56:22+00:00",
+  "parameters": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "description": "5-digit member number",
+      "required": true,
+      "pattern": "\\d{5}",
+      "sensitive": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "member_full_name",
+      "type": "string",
+      "description": "Full name of the member",
+      "sensitive": false
+    },
+    {
+      "name": "regular_savings_balance",
+      "type": "string",
+      "description": "Current regular savings balance",
+      "sensitive": false,
+      "post_process": "\\$?([\\d,]+\\.\\d{2})"
+    }
+  ],
+  "outcomes": [
+    {
+      "code": "MEMBER_NOT_FOUND",
+      "description": "The member number entered does not correspond to any existing member record."
+    }
+  ],
+  "preconditions": [
+    "secrets available: MERIDIAN_DEMO_PASS, MERIDIAN_DEMO_USER"
+  ],
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "target": {
+        "anchor_id": "operator_id_textbox",
+        "role": "textbox",
+        "name": "Operator ID",
+        "label": "Operator ID",
+        "frame": [],
+        "bbox": [
+          511.3,
+          103.0,
+          185.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${secret:MERIDIAN_DEMO_USER}",
+      "risk": "reversible",
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Enter operator ID",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "target": {
+        "anchor_id": "password_textbox",
+        "role": "textbox",
+        "name": "Password",
+        "label": "Password",
+        "frame": [],
+        "bbox": [
+          511.3,
+          148.0,
+          185.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${secret:MERIDIAN_DEMO_PASS}",
+      "risk": "reversible",
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Enter password",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "target": {
+        "anchor_id": "sign_on_button",
+        "role": "button",
+        "name": "Sign On",
+        "frame": [],
+        "bbox": [
+          632.1,
+          193.0,
+          64.2,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "MEMBER SERVICES",
+        "timeout_ms": 8000
+      },
+      "skip_if": {
+        "role_visible": {
+          "anchor_id": "signed_on_menu",
+          "role": "link",
+          "name": "Member Lookup",
+          "frame": [
+            "menu"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Sign on",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "target": {
+        "anchor_id": "member_lookup_link",
+        "role": "link",
+        "name": "Member Lookup",
+        "frame": [
+          "menu"
+        ],
+        "bbox": [
+          12.0,
+          82.0,
+          115.6,
+          17.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "read_only",
+      "expect": {
+        "role_visible": {
+          "anchor_id": "expect_member_number_textbox",
+          "role": "textbox",
+          "name": "Member Number",
+          "frame": [
+            "main"
+          ],
+          "allow_geometric_fallback": false
+        },
+        "timeout_ms": 8000
+      },
+      "description": "Go to Member Lookup",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "target": {
+        "anchor_id": "member_number_textbox",
+        "role": "textbox",
+        "name": "Member Number",
+        "label": "Member Number",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          150.5,
+          51.0,
+          121.0,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + associated/adjacent label — the way an operator would describe it"
+      },
+      "value": "${member_id}",
+      "risk": "reversible",
+      "description": "Enter member number",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s06_search_for_member",
+      "action": "click",
+      "target": {
+        "anchor_id": "search_button",
+        "role": "button",
+        "name": "Search",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          281.5,
+          51.0,
+          58.2,
+          21.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Role + visible caption; captions are configuration in this product, so tenants override via overlay"
+      },
+      "risk": "reversible",
+      "expect": {
+        "text_visible": "Member Detail",
+        "timeout_ms": 8000
+      },
+      "description": "Search for member",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s07_full_name_of_the_member",
+      "action": "read",
+      "target": {
+        "anchor_id": "name_cell",
+        "role": "cell",
+        "label": "Name",
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          149.6,
+          71.0,
+          132.5,
+          26.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Value cell to the right of the label 'Name'; label text is stable, the value is not"
+      },
+      "output": "member_full_name",
+      "risk": "read_only",
+      "description": "Full name of the member",
+      "requires_human_approval": false
+    },
+    {
+      "step_id": "s08_current_regular_savings_",
+      "action": "read",
+      "target": {
+        "anchor_id": "regular_savings_current_balance_cell",
+        "role": "cell",
+        "table_cell": {
+          "row_header": "Regular Savings",
+          "row_header_column": "Account Type",
+          "column_header": "Current Balance"
+        },
+        "frame": [
+          "main"
+        ],
+        "bbox": [
+          370.1,
+          154.0,
+          158.9,
+          28.0
+        ],
+        "allow_geometric_fallback": false,
+        "rationale": "Table cell addressed by row/column header text; indexes drift, headers do not"
+      },
+      "output": "regular_savings_balance",
+      "risk": "read_only",
+      "description": "Current regular savings balance",
+      "requires_human_approval": false
+    }
+  ],
+  "checkpoint": {
+    "description": "'Member Detail' is visible",
+    "expect": {
+      "text_visible": "Member Detail",
+      "timeout_ms": 8000
+    }
+  },
+  "conditions": [
+    {
+      "rule_id": "member_not_found",
+      "kind": "business_outcome",
+      "match": {
+        "text_pattern": "No record found for Member Number \\d+\\."
+      },
+      "response": {
+        "kind": "return_outcome",
+        "outcome_code": "MEMBER_NOT_FOUND",
+        "max_attempts": 2,
+        "wait_ms": 1000,
+        "message_capture": "(No record found for Member Number \\d+\\.)"
+      },
+      "description": "The member number entered does not correspond to any existing member record."
+    },
+    {
+      "rule_id": "maintenance_notice",
+      "kind": "recoverable",
+      "match": {
+        "text_pattern": "System Notice"
+      },
+      "response": {
+        "kind": "dismiss",
+        "dismiss_target": {
+          "anchor_id": "ack_button",
+          "role": "button",
+          "name": "Acknowledge",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "max_attempts": 2,
+        "wait_ms": 1000
+      },
+      "description": "Once-per-session maintenance interstitial; acknowledge and continue"
+    },
+    {
+      "rule_id": "session_expired",
+      "kind": "recoverable",
+      "match": {
+        "text_pattern": "Session Expired"
+      },
+      "response": {
+        "kind": "run_recovery",
+        "recovery_block": "re_signon",
+        "resume_from_step": "s04_go_to_member_lookup",
+        "max_attempts": 1,
+        "wait_ms": 1000
+      },
+      "description": "Operator session timed out; sign on again and resume the flow from its first post-sign-on step"
+    },
+    {
+      "rule_id": "signed_off",
+      "kind": "hard_failure",
+      "match": {
+        "text_pattern": "Invalid operator credentials"
+      },
+      "response": {
+        "kind": "fail",
+        "outcome_code": "AUTH_FAILED",
+        "max_attempts": 2,
+        "wait_ms": 1000
+      },
+      "description": "Sign-on rejected — credentials are wrong; a person must fix configuration"
+    }
+  ],
+  "recovery_blocks": {
+    "re_signon": [
+      {
+        "step_id": "rs_return",
+        "action": "click",
+        "target": {
+          "anchor_id": "return_to_signon",
+          "role": "link",
+          "name": "Return to Sign On",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "risk": "read_only",
+        "expect": {
+          "role_visible": {
+            "anchor_id": "sign_on_button",
+            "role": "button",
+            "name": "Sign On",
+            "frame": [],
+            "allow_geometric_fallback": false
+          },
+          "timeout_ms": 8000
+        },
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_user",
+        "action": "type",
+        "target": {
+          "anchor_id": "operator_id_input",
+          "role": "textbox",
+          "name": "Operator ID",
+          "label": "Operator ID",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "value": "${secret:MERIDIAN_DEMO_USER}",
+        "risk": "reversible",
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_pass",
+        "action": "type",
+        "target": {
+          "anchor_id": "password_input",
+          "role": "textbox",
+          "name": "Password",
+          "label": "Password",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "value": "${secret:MERIDIAN_DEMO_PASS}",
+        "risk": "reversible",
+        "description": "",
+        "requires_human_approval": false
+      },
+      {
+        "step_id": "rs_submit",
+        "action": "click",
+        "target": {
+          "anchor_id": "sign_on_button",
+          "role": "button",
+          "name": "Sign On",
+          "frame": [],
+          "allow_geometric_fallback": false
+        },
+        "risk": "reversible",
+        "expect": {
+          "role_visible": {
+            "anchor_id": "signed_on_menu",
+            "role": "link",
+            "name": "Member Lookup",
+            "frame": [
+              "menu"
+            ],
+            "allow_geometric_fallback": false
+          },
+          "timeout_ms": 8000
+        },
+        "description": "",
+        "requires_human_approval": false
+      }
+    ]
+  },
+  "max_risk": "reversible",
+  "notes": [
+    "draft: review anchors and rules before approval",
+    "v2: learned ['member_not_found'] from run discovery-20260913T005623-4d417c",
+    "approved v2 by isaac"
+  ]
+}

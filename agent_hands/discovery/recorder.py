@@ -58,6 +58,7 @@ class Recorder:
         self.conditions: list[ConditionRule] = []
         self.outcomes: list[OutcomeSpec] = []
         self._anchor_ids: set[str] = set()
+        self._observed_values: set[str] = set()   # raw values read during the run — never allowed inside an expectation
         self._signed_on = profile is None or profile.signed_on_marker is None
         self.notes: list[str] = []
 
@@ -119,7 +120,9 @@ class Recorder:
         old = {e.name for e in before.elements}
         new = [e for e in after.elements if e.name and e.name not in old and e.role in {"heading", "cell"}]
         for e in new:
-            n = e.name.strip()
+            # Legacy headings often embed record data ("Open Sub-Account - Dana R. Whitfield"); keep the
+            # invariant prefix only, otherwise the expectation would only ever hold for this one record.
+            n = re.split(r"\s+[-–—|]\s+|:\s", e.name.strip(), maxsplit=1)[0].strip()
             if 4 <= len(n) <= 40 and not re.search(r"\d{3,}", n) and not n.endswith(":"):
                 return Expectation(text_visible=n)
         new_ctrl = [e for e in after.elements if e.role in {"textbox", "button", "combobox"} and e.name and e.name not in old]
@@ -144,12 +147,15 @@ class Recorder:
     def record_action(self, action: ActionType, element: Optional[Element], value: Optional[str], before: Observation,
                       after: Observation, reason: str, risk: RiskClass, output: Optional[str] = None,
                       output_desc: str = "", human_approved: bool = False) -> Step:
-        sid = f"s{len(self.steps) + 1:02d}_{slug(reason)[:24] or action.value}"
+        reason = self._template(reason)   # a reason like "read balance of member 12345" must not bake the input in
+        sid = f"s{len(self.steps) + 1:02d}_{slug(reason.replace('${', ' ').replace('}', ' '))[:24] or action.value}"
         target = self._anchor(element, for_read=(action == ActionType.READ)) if element else None
         tmpl = self._template(value) if value is not None else None
         step = Step(step_id=sid, action=action, target=target, value=tmpl, output=output, risk=risk,
                     description=reason, requires_human_approval=(risk == RiskClass.IRREVERSIBLE),
                     expect=self.derive_expectation(before, after) if action in {ActionType.CLICK, ActionType.PRESS, ActionType.NAVIGATE} else None)
+        if output and element and after.find(element.ref):
+            self._observed_values.add(after.find(element.ref).name)
         if output:
             self.outputs.append(Output(name=output, description=output_desc or reason,
                                        post_process=r"\$?([\d,]+\.\d{2})" if re.fullmatch(r"\$?[\d,]+\.\d{2}", (after.find(element.ref).name if element and after.find(element.ref) else "") or "") else None))
@@ -199,6 +205,12 @@ class Recorder:
                     c.response.resume_from_step = first_after
                 conditions.append(c)
             recovery = {k: [s.model_copy(deep=True) for s in v] for k, v in self.profile.recovery_blocks.items()}
+        # scrub: any expectation that mentions a value we read or were given is record-specific, not a flow invariant
+        leaks = {v for v in (*self._observed_values, *self._values.values()) if v and len(v) >= 3}
+        for st in self.steps:
+            if st.expect and st.expect.text_visible and any(v in st.expect.text_visible for v in leaks):
+                self.notes.append(f"step {st.step_id}: dropped record-specific expectation {st.expect.text_visible!r}")
+                st.expect = None
         # the checkpoint doubles as the last step's expectation if it had none
         if self.steps and self.steps[-1].expect is None and self.steps[-1].action != ActionType.READ:
             self.steps[-1].expect = Expectation(text_visible=checkpoint_text)

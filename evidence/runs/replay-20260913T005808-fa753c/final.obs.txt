@@ -1,0 +1,34 @@
+LOCATION: http://127.0.0.1:5055/t/harbor/
+FRAME banner: http://127.0.0.1:5055/t/harbor/banner
+FRAME menu: http://127.0.0.1:5055/t/harbor/menu
+FRAME main: http://127.0.0.1:5055/t/harbor/members/23456
+TITLE: Meridian Core v7.4 (Harbor build) - Harbor Point Bank
+INTERACTIVE CONTROLS:
+  [f1e1] link "Sign Off" frame=banner
+  [f2e1] link "Home" frame=menu
+  [f2e2] link "Customer Inquiry" frame=menu
+  [f3e15] button "New Sub-Account" frame=main
+  [f3e16] button "New Customer Inquiry" frame=main
+READABLE CELLS / TEXT:
+  [f1e0] cell "Harbor Point Bank Meridian Core v7.4 (Harbor build)" frame=banner
+  [f2e0] cell "MEMBER SERVICES" frame=menu
+  [f2e3] cell "TRANSACTIONS" [row: 'TRANSACTIONS', col: 'MEMBER SERVICES'] frame=menu
+  [f2e4] cell "Post Transaction" [row: 'Post Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e5] cell "Reverse Transaction" [row: 'Reverse Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e6] cell "ADMIN" [row: 'ADMIN', col: 'MEMBER SERVICES'] frame=menu
+  [f2e7] cell "End of Day" [row: 'End of Day', col: 'MEMBER SERVICES'] frame=menu
+  [f3e0] cell "Member Detail" frame=main
+  [f3e1] cell "Customer ID:" [row: 'Customer ID:', col: 'Customer ID:'] frame=main
+  [f3e2] cell "23456" (label: Customer ID) [row: 'Customer ID:', col: '23456'] frame=main
+  [f3e3] cell "Status:" [row: 'Customer ID:', col: 'Status:'] frame=main
+  [f3e4] cell "Active" (label: Status) [row: 'Customer ID:', col: 'Active'] frame=main
+  [f3e5] cell "Name:" [row: 'Name:', col: 'Customer ID:'] frame=main
+  [f3e6] cell "Miguel A. Sandoval" (label: Name) [row: 'Name:', col: '23456'] frame=main
+  [f3e7] cell "Member Since:" [row: 'Name:', col: 'Status:'] frame=main
+  [f3e8] cell "2019-11-21" (label: Member Since) [row: 'Name:', col: 'Active'] frame=main
+  [f3e9] cell "Account Type" [row: 'Account Type', col: 'Account Type'] frame=main
+  [f3e10] cell "Account Number" (label: Account Type) [row: 'Account Type', col: 'Account Number'] frame=main
+  [f3e11] cell "Current Balance" (label: Account Number) [row: 'Account Type', col: 'Current Balance'] frame=main
+  [f3e12] cell "Statement Savings" [row: 'Statement Savings', col: 'Account Type'] frame=main
+  [f3e13] cell "[REDACTED account_no]" [row: 'Statement Savings', col: 'Account Number'] frame=main
+  [f3e14] cell "$912.00" [row: 'Statement Savings', col: 'Current Balance'] frame=main

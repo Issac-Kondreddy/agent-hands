@@ -1,0 +1,28 @@
+LOCATION: http://127.0.0.1:5055/t/meridian/
+FRAME banner: http://127.0.0.1:5055/t/meridian/banner
+FRAME menu: http://127.0.0.1:5055/t/meridian/menu
+FRAME main: http://127.0.0.1:5055/t/meridian/members/12345/subaccount/review
+TITLE: Meridian Core v7.2 - Meridian Federal Credit Union
+INTERACTIVE CONTROLS:
+  [f1e1] link "Sign Off" frame=banner
+  [f2e1] link "Home" frame=menu
+  [f2e2] link "Member Lookup" frame=menu
+  [f3e10] button "Return to Member" frame=main
+READABLE CELLS / TEXT:
+  [f1e0] cell "Meridian Federal Credit Union Meridian Core v7.2" frame=banner
+  [f2e0] cell "MEMBER SERVICES" frame=menu
+  [f2e3] cell "TRANSACTIONS" [row: 'TRANSACTIONS', col: 'MEMBER SERVICES'] frame=menu
+  [f2e4] cell "Post Transaction" [row: 'Post Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e5] cell "Reverse Transaction" [row: 'Reverse Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e6] cell "ADMIN" [row: 'ADMIN', col: 'MEMBER SERVICES'] frame=menu
+  [f2e7] cell "End of Day" [row: 'End of Day', col: 'MEMBER SERVICES'] frame=menu
+  [f3e0] cell "Sub-Account Opened" frame=main
+  [f3e1] cell "Confirmation The sub-account has been opened successfully." frame=main
+  [f3e2] cell "New Account Number" [row: 'New Account Number', col: 'New Account Number'] frame=main
+  [f3e3] cell "[REDACTED account_no]" (label: New Account Number) [row: 'New Account Number', col: '[REDACTED account_no]'] frame=main
+  [f3e4] cell "Member Number" [row: 'Member Number', col: 'New Account Number'] frame=main
+  [f3e5] cell "12345 (Dana R. Whitfield)" (label: Member Number) [row: 'Member Number', col: '[REDACTED account_no]'] frame=main
+  [f3e6] cell "Account Nickname" [row: 'Account Nickname', col: 'New Account Number'] frame=main
+  [f3e7] cell "Vacation" (label: Account Nickname) [row: 'Account Nickname', col: '[REDACTED account_no]'] frame=main
+  [f3e8] cell "Initial Deposit" [row: 'Initial Deposit', col: 'New Account Number'] frame=main
+  [f3e9] cell "$100" (label: Initial Deposit) [row: 'Initial Deposit', col: '[REDACTED account_no]'] frame=main

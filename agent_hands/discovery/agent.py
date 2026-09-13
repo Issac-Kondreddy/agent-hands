@@ -39,7 +39,7 @@ from ..schema import ActionType, Capability, Parameter, RiskClass
 from ..surface.base import Element, Observation, Surface, SurfaceError
 from .recorder import AppProfile, Recorder
 
-DEFAULT_MODEL = os.environ.get("AGENT_HANDS_MODEL", "claude-sonnet-4-5")
+DEFAULT_MODEL = os.environ.get("AGENT_HANDS_MODEL", "claude-sonnet-5")
 
 SYSTEM_PROMPT = """You are the hands of an AI agent operating a legacy bank back-office application through its user interface.
 You see an accessibility-style rendering of the screen (every frame), with each control tagged by a ref like [f3e2].
@@ -89,7 +89,7 @@ TOOLS = [
          "description": {"type": "string"}}, "required": ["kind", "text_pattern", "description"]}},
     {"name": "done", "description": "The goal is achieved. Finalise the capability.",
      "input_schema": {"type": "object", "properties": {
-         "checkpoint_text": {"type": "string", "description": "Text visible on screen right now that proves success"},
+         "checkpoint_text": {"type": "string", "description": "An EXACT substring of text visible on screen right now that proves success (a heading or label, e.g. 'Member Detail'). Not a summary."},
          "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.]*$", "description": "e.g. meridian_core.member_savings_balance"},
          "title": {"type": "string"}, "description": {"type": "string", "description": "What this capability does, for an agent deciding whether to call it"}},
          "required": ["checkpoint_text", "capability_id", "title", "description"]}},
@@ -337,6 +337,12 @@ class DiscoveryAgent:
                             "'BUSINESS_OUTCOME: <code>'; otherwise continue."), None
                 return f"condition {rule.rule_id} recorded", None
             if name == "done":
+                if args["checkpoint_text"].lower() not in obs.visible_text.lower():
+                    # Success must be *shown*, not asserted. Let the model try again with literal screen text.
+                    log.event("agent.done_rejected", checkpoint_text=args["checkpoint_text"])
+                    return (f"REJECTED: checkpoint_text {args['checkpoint_text']!r} is not literally on the current screen. "
+                            "Call done again with an exact substring of visible text that proves success "
+                            "(e.g. a screen heading such as 'Member Detail' or a table header)."), None
                 return "finalising", {"kind": "done", **args}
             if name == "stuck":
                 reason = args["reason"]

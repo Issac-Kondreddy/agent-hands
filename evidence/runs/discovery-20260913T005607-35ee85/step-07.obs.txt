@@ -1,0 +1,37 @@
+LOCATION: http://127.0.0.1:5055/t/meridian/
+FRAME banner: http://127.0.0.1:5055/t/meridian/banner
+FRAME menu: http://127.0.0.1:5055/t/meridian/menu
+FRAME main: http://127.0.0.1:5055/t/meridian/members/12345
+TITLE: Meridian Core v7.2 - Meridian Federal Credit Union
+INTERACTIVE CONTROLS:
+  [f1e1] link "Sign Off" frame=banner
+  [f2e1] link "Home" frame=menu
+  [f2e2] link "Member Lookup" frame=menu
+  [f3e18] button "Open Sub-Account" frame=main
+  [f3e19] button "New Member Lookup" frame=main
+READABLE CELLS / TEXT:
+  [f1e0] cell "Meridian Federal Credit Union Meridian Core v7.2" frame=banner
+  [f2e0] cell "MEMBER SERVICES" frame=menu
+  [f2e3] cell "TRANSACTIONS" [row: 'TRANSACTIONS', col: 'MEMBER SERVICES'] frame=menu
+  [f2e4] cell "Post Transaction" [row: 'Post Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e5] cell "Reverse Transaction" [row: 'Reverse Transaction', col: 'MEMBER SERVICES'] frame=menu
+  [f2e6] cell "ADMIN" [row: 'ADMIN', col: 'MEMBER SERVICES'] frame=menu
+  [f2e7] cell "End of Day" [row: 'End of Day', col: 'MEMBER SERVICES'] frame=menu
+  [f3e0] cell "Member Detail" frame=main
+  [f3e1] cell "Member Number:" [row: 'Member Number:', col: 'Member Number:'] frame=main
+  [f3e2] cell "12345" (label: Member Number) [row: 'Member Number:', col: '12345'] frame=main
+  [f3e3] cell "Status:" [row: 'Member Number:', col: 'Status:'] frame=main
+  [f3e4] cell "Active" (label: Status) [row: 'Member Number:', col: 'Active'] frame=main
+  [f3e5] cell "Name:" [row: 'Name:', col: 'Member Number:'] frame=main
+  [f3e6] cell "Dana R. Whitfield" (label: Name) [row: 'Name:', col: '12345'] frame=main
+  [f3e7] cell "Member Since:" [row: 'Name:', col: 'Status:'] frame=main
+  [f3e8] cell "2014-03-09" (label: Member Since) [row: 'Name:', col: 'Active'] frame=main
+  [f3e9] cell "Account Type" [row: 'Account Type', col: 'Account Type'] frame=main
+  [f3e10] cell "Account Number" (label: Account Type) [row: 'Account Type', col: 'Account Number'] frame=main
+  [f3e11] cell "Current Balance" (label: Account Number) [row: 'Account Type', col: 'Current Balance'] frame=main
+  [f3e12] cell "Regular Savings" [row: 'Regular Savings', col: 'Account Type'] frame=main
+  [f3e13] cell "[REDACTED account_no]" [row: 'Regular Savings', col: 'Account Number'] frame=main
+  [f3e14] cell "$4,812.37" [row: 'Regular Savings', col: 'Current Balance'] frame=main
+  [f3e15] cell "Share Draft Checking" [row: 'Share Draft Checking', col: 'Account Type'] frame=main
+  [f3e16] cell "[REDACTED account_no]" [row: 'Share Draft Checking', col: 'Account Number'] frame=main
+  [f3e17] cell "$1,204.10" [row: 'Share Draft Checking', col: 'Current Balance'] frame=main

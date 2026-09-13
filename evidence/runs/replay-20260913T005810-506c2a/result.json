@@ -1,0 +1,68 @@
+{
+  "status": "BUSINESS_OUTCOME",
+  "capability_id": "meridian_core.member_savings_balance",
+  "capability_version": 3,
+  "run_id": "replay-20260913T005810-506c2a",
+  "evidence_dir": "evidence/runs/replay-20260913T005810-506c2a",
+  "outputs": {},
+  "outcome_code": "MEMBER_NOT_FOUND",
+  "outcome_detail": "No record found for Customer ID 99999.",
+  "failed_step": "s06_search_for_member",
+  "expected": null,
+  "observed": null,
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 197,
+      "note": ""
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 189,
+      "note": ""
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 213,
+      "note": ""
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 203,
+      "note": ""
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 131,
+      "note": ""
+    }
+  ],
+  "drift": [],
+  "interventions": 0,
+  "duration_ms": 1296
+}

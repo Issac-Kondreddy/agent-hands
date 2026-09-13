@@ -1,0 +1,118 @@
+{
+  "status": "NEEDS_HUMAN",
+  "capability_id": "meridian_core.open_regular_savings_subaccount",
+  "capability_version": 2,
+  "run_id": "replay-20260913T010049-5fc910",
+  "evidence_dir": "evidence/runs/replay-20260913T010049-5fc910",
+  "outputs": {},
+  "outcome_code": "HUMAN_APPROVAL_REQUIRED",
+  "outcome_detail": "HUMAN_APPROVAL_REQUIRED: step s11_confirm_and_open_the_sub is marked requires_human_approval",
+  "failed_step": "s11_confirm_and_open_the_sub",
+  "expected": null,
+  "observed": "Meridian Federal Credit Union Meridian Core v7.2 Operator: [REDACTED secret:MERIDIAN_DEMO_USER] | Sign Off\nMEMBER SERVICES Home Member Lookup TRANSACTIONS Post Transaction Reverse Transaction ADMIN End of Day\nReview New Sub-Account Please review before finalizing. Opening a sub-account posts to the core ledger and cannot be u",
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 196,
+      "note": ""
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 186,
+      "note": ""
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 206,
+      "note": ""
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 230,
+      "note": ""
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 136,
+      "note": ""
+    },
+    {
+      "step_id": "s06_search_for_member",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 156,
+      "note": ""
+    },
+    {
+      "step_id": "s07_open_new_sub_account",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 178,
+      "note": ""
+    },
+    {
+      "step_id": "s08_enter_nickname",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 164,
+      "note": ""
+    },
+    {
+      "step_id": "s09_enter_initial_deposit",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 112,
+      "note": ""
+    },
+    {
+      "step_id": "s10_continue_to_confirmation",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 175,
+      "note": ""
+    }
+  ],
+  "drift": [],
+  "interventions": 1,
+  "duration_ms": 2007
+}

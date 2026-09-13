@@ -24,7 +24,7 @@ Design write-up: [`REPORT.md`](REPORT.md). Evidence of real runs: [`evidence/`](
 | `profiles/`, `overrides/` | App profile (product-level runtime conditions) and tenant overlays. |
 | `artifacts/` | Saved capabilities (draft and approved versions). |
 | `evidence/` | Logs, screenshots and snapshots from the real discovery run and replays. |
-| `tests/` | 72 tests: schema, ladder, policy, redaction, lease, replay against the live app incl. every fault, handoff branches, hermetic discovery with a fake model, tenant overlay, catalog, web operator. |
+| `tests/` | 73 tests: schema, ladder, policy, redaction, lease, replay against the live app incl. every fault, handoff branches, hermetic discovery with a fake model, tenant overlay, catalog, web operator. |
 
 ## Setup
 
@@ -133,7 +133,7 @@ python -m agent_hands stability --capability meridian_core.member_savings_balanc
 
 ## Configuration
 
-* `ANTHROPIC_API_KEY` — discovery only. `AGENT_HANDS_MODEL` overrides the model (default `claude-sonnet-4-5`; if that id is unknown to the API the agent falls back to the newest Sonnet it can list).
+* `ANTHROPIC_API_KEY` — discovery only. `AGENT_HANDS_MODEL` overrides the model (default `claude-sonnet-5`; if that id is unknown to the API the agent falls back to the newest Sonnet it can list).
 * `MERIDIAN_DEMO_USER` / `MERIDIAN_DEMO_PASS` — the synthetic operator credentials, typed as `${secret:...}`; never written to artifacts or logs.
 * `--policy policy.json` — allowlist/risk/redaction as JSON (see `Policy` in `agent_hands/policy.py`); the default is the local target's allowlist with `/logout` and `/__chaos` denied and irreversible actions requiring a human.
 

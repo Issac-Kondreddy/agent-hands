@@ -1,0 +1,68 @@
+{
+  "status": "FAILED",
+  "capability_id": "meridian_core.member_savings_balance",
+  "capability_version": 2,
+  "run_id": "replay-20260913T005716-5f540d",
+  "evidence_dir": "evidence/runs/replay-20260913T005716-5f540d",
+  "outputs": {},
+  "outcome_code": "APP_ERROR",
+  "outcome_detail": "application returned HTTP 500",
+  "failed_step": "s06_search_for_member",
+  "expected": null,
+  "observed": "Meridian Federal Credit Union Meridian Core v7.2 Operator: [REDACTED secret:MERIDIAN_DEMO_USER] | Sign Off\nMEMBER SERVICES Home Member Lookup TRANSACTIONS Post Transaction Reverse Transaction ADMIN End of Day\nInternal Server Error The server encountered an internal error and was unable to complete your request. Either the ser",
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 205,
+      "note": ""
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 204,
+      "note": ""
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 239,
+      "note": ""
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 227,
+      "note": ""
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 134,
+      "note": ""
+    }
+  ],
+  "drift": [],
+  "interventions": 0,
+  "duration_ms": 1279
+}

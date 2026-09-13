@@ -1,0 +1,101 @@
+{
+  "status": "SUCCESS",
+  "capability_id": "meridian_core.member_savings_balance",
+  "capability_version": 3,
+  "run_id": "replay-20260913T005759-735d33",
+  "evidence_dir": "evidence/runs/replay-20260913T005759-735d33",
+  "outputs": {
+    "member_full_name": "Dana R. Whitfield",
+    "regular_savings_balance": "4,812.37"
+  },
+  "outcome_code": null,
+  "outcome_detail": null,
+  "failed_step": null,
+  "expected": null,
+  "observed": null,
+  "steps": [
+    {
+      "step_id": "s01_enter_operator_id",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 179,
+      "note": ""
+    },
+    {
+      "step_id": "s02_enter_password",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 179,
+      "note": ""
+    },
+    {
+      "step_id": "s03_sign_on",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 1688,
+      "note": ""
+    },
+    {
+      "step_id": "s04_go_to_member_lookup",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 1844,
+      "note": ""
+    },
+    {
+      "step_id": "s05_enter_member_number",
+      "action": "type",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 122,
+      "note": ""
+    },
+    {
+      "step_id": "s06_search_for_member",
+      "action": "click",
+      "ok": true,
+      "rung": "exact",
+      "confidence": 1.0,
+      "attempts": 1,
+      "duration_ms": 3241,
+      "note": ""
+    },
+    {
+      "step_id": "s07_full_name_of_the_member",
+      "action": "read",
+      "ok": true,
+      "rung": "label",
+      "confidence": 0.95,
+      "attempts": 1,
+      "duration_ms": 70,
+      "note": ""
+    },
+    {
+      "step_id": "s08_current_regular_savings_",
+      "action": "read",
+      "ok": true,
+      "rung": "table",
+      "confidence": 0.95,
+      "attempts": 1,
+      "duration_ms": 43,
+      "note": ""
+    }
+  ],
+  "drift": [],
+  "interventions": 0,
+  "duration_ms": 7504
+}

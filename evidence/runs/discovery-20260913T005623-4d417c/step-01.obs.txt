@@ -1,0 +1,10 @@
+LOCATION: http://127.0.0.1:5055/t/meridian/login
+TITLE: Meridian Core v7.2 Sign On
+INTERACTIVE CONTROLS:
+  [f0e2] textbox "Operator ID" value='[REDACTED secret:MERIDIAN_DEMO_USER]'
+  [f0e4] textbox "Password"
+  [f0e5] button "Sign On"
+READABLE CELLS / TEXT:
+  [f0e0] cell "Meridian Federal Credit Union Meridian Core v7.2 — Operator Sign On"
+  [f0e1] cell "Operator ID" [row: 'Operator ID', col: 'Meridian Federal Credit Union Meridian Core v7.2 — Operator Sign On']
+  [f0e3] cell "Password" [row: 'Password', col: 'Meridian Federal Credit Union Meridian Core v7.2 — Operator Sign On']

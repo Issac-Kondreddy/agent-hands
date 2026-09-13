@@ -1,0 +1,9 @@
+{
+  "status": "ENRICHED",
+  "detail": "BUSINESS_OUTCOME: DEPOSIT_BELOW_MINIMUM - The requested initial deposit of $${deposit} is below the system's required minimum of $25.00 to open a new sub-account. The system rejects the transaction with the validation message \"Initial Deposit must be at least $25.00.\" and does not allow proceeding to the confirmation screen. This is a legitimate business rule enforcement, not a technical failure.",
+  "artifact": "artifacts/meridian_core.open_regular_savings_subaccount.v2.json",
+  "model": "claude-sonnet-5",
+  "model_calls": 10,
+  "actions": 11,
+  "interventions": 0
+}
