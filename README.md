@@ -1,5 +1,7 @@
 # agent-hands
 
+[![tests](https://github.com/Issac-Kondreddy/agent-hands/actions/workflows/tests.yml/badge.svg)](https://github.com/Issac-Kondreddy/agent-hands/actions/workflows/tests.yml)
+
 **The layer that gives an AI agent hands inside legacy software with no API.**
 An LLM works out how to complete a task inside a real UI *once*; the successful run is recorded as a typed, versioned, parameterised **capability**; that capability replays deterministically afterwards with **no model in the loop**, reports business outcomes vs. failures explicitly, and hands the live session to a human when it must.
 
