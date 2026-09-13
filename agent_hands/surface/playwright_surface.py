@@ -253,14 +253,28 @@ class PlaywrightSurface:
             raise SurfaceError(f"element {ref!r} detached")
         return h
 
+    _NAVIGATED_MARKERS = ("navigat", "context was destroyed", "detached", "Target closed", "frame was detached")
+
     def click(self, ref: str) -> None:
         h = self._handle(ref)
         try:
             h.scroll_into_view_if_needed(timeout=3000)
             h.click(timeout=5000)
         except PWError as e:
-            raise SurfaceError(f"click failed on {ref}: {e}") from e
+            # In framesets a click often navigates the frame before Playwright's post-click bookkeeping
+            # finishes; the click *did* dispatch. Treat "the page moved on" as success, anything else as failure.
+            if not any(m in str(e) for m in self._NAVIGATED_MARKERS):
+                raise SurfaceError(f"click failed on {ref}: {e}") from e
         self._settle()
+
+    def observe_after_change(self, before: Observation, timeout_ms: int = 2000) -> Observation:
+        """Observe, waiting briefly for the screen to differ from `before` (legacy frames navigate late)."""
+        deadline = time.time() + timeout_ms / 1000
+        obs = self.observe()
+        while time.time() < deadline and obs.visible_text == before.visible_text and obs.all_locations() == before.all_locations():
+            time.sleep(0.1)
+            obs = self.observe()
+        return obs
 
     def click_xy(self, frame: list[str], x: float, y: float) -> None:
         # Geometric fallback: coordinates are frame-relative; translate to page.

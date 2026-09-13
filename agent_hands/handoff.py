@@ -215,27 +215,33 @@ class ScriptedOperator:
         self.script, self.decision, self.human_id = script, decision, human_id
         self.handled: list[InterventionRequest] = []
 
-    def _find(self, obs: Observation, target):
+    @staticmethod
+    def _match(obs: Observation, target):
         if callable(target):
-            matches = [e for e in obs.elements if target(e)]
-        else:
-            role, name = target
-            matches = [e for e in obs.elements if e.role == role and e.name.strip().lower() == name.lower()]
-        if not matches:
-            raise RuntimeError(f"scripted operator could not find {target}")
-        return matches[0].ref
+            return [e for e in obs.elements if target(e)]
+        role, name = target
+        return [e for e in obs.elements if e.role == role and e.name.strip().lower() == name.lower()]
+
+    def _find(self, session: "LiveSession", target, timeout_s: float = 3.0) -> str:
+        deadline = time.time() + timeout_s
+        while True:
+            matches = self._match(session.observe(), target)
+            if matches:
+                return matches[0].ref
+            if time.time() > deadline:
+                raise RuntimeError(f"scripted operator could not find {target}")
+            time.sleep(0.2)
 
     def handle(self, request: InterventionRequest, session: LiveSession) -> Decision:
         self.handled.append(request)
         for act in self.script:
-            obs = session.observe()
             kind = act[0]
             if kind == "click":
-                session.click(self._find(obs, act[1]))
+                session.click(self._find(session, act[1]))
             elif kind == "type":
-                session.type(self._find(obs, act[1]), act[2])
+                session.type(self._find(session, act[1]), act[2])
             elif kind == "select":
-                session.select(self._find(obs, act[1]), act[2])
+                session.select(self._find(session, act[1]), act[2])
             elif kind == "press":
                 session.press(act[1])
             elif kind == "navigate":

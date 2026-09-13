@@ -198,7 +198,7 @@ class DiscoveryAgent:
                     if final is not None:
                         result_holder["final"] = final
                     if final is None:
-                        obs = self.surface.observe()
+                        obs = self._after(obs) if tu.name in {"click", "press", "navigate"} else self.surface.observe()
                         result.actions += 1
                         log.snapshot(self.surface, f"step-{result.actions:02d}", obs)
                         out = f"{out}\n\nCURRENT SCREEN:\n{obs.render()}"
@@ -260,6 +260,10 @@ class DiscoveryAgent:
             text = text.replace(f"${{secret:{k}}}", v)
         return text
 
+    def _after(self, before: Observation) -> Observation:
+        fn = getattr(self.surface, "observe_after_change", None)
+        return fn(before) if fn else self.surface.observe()
+
     def _el(self, obs: Observation, ref: str) -> Element:
         e = obs.find(ref)
         if e is None:
@@ -280,7 +284,7 @@ class DiscoveryAgent:
                             "Call stuck if the goal cannot be reached without it."), None
                 log.event("agent.action", action="click", target=e.describe(), reason=args["reason"], risk=risk.value)
                 self.surface.click(e.ref)
-                after = self.surface.observe()
+                after = self._after(obs)
                 rec.record_action(ActionType.CLICK, e, None, obs, after, args["reason"], risk)
                 return f"clicked {e.describe()}", None
             if name == "type":
@@ -305,14 +309,14 @@ class DiscoveryAgent:
                 self.policy.check(ActionType.PRESS)
                 log.event("agent.action", action="press", key=args["key"], reason=args["reason"])
                 self.surface.press(args["key"])
-                after = self.surface.observe()
+                after = self._after(obs)
                 rec.record_action(ActionType.PRESS, None, args["key"], obs, after, args["reason"], RiskClass.REVERSIBLE)
                 return f"pressed {args['key']}", None
             if name == "navigate":
                 self.policy.check(ActionType.NAVIGATE, url=args["url"])
                 log.event("agent.action", action="navigate", url=args["url"], reason=args["reason"])
                 self.surface.navigate(args["url"])
-                after = self.surface.observe()
+                after = self._after(obs)
                 rec.record_action(ActionType.NAVIGATE, None, args["url"], obs, after, args["reason"], RiskClass.READ_ONLY)
                 return f"navigated to {args['url']}", None
             if name == "read":
