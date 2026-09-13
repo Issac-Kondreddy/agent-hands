@@ -1,0 +1,13 @@
+<html><head><title>{{ t.product }} Sign On</title></head>
+<body bgcolor="#f0f0f0" style="font-family:Verdana,Arial;font-size:12px;">
+<br><br><center>
+<table bgcolor="#ffffff" cellpadding="10" border="1" bordercolor="#999">
+<tr><td bgcolor="{{ t.color }}" colspan="2"><font color="#fff" size="3"><b>{{ t.name }}</b></font><br>
+<font color="#ddd" size="1">{{ t.product }} &mdash; Operator Sign On</font></td></tr>
+{% if error %}<tr><td colspan="2"><font color="#b00000"><b>{{ error }}</b></font></td></tr>{% endif %}
+<form method="post" action="/t/{{ tid }}/login">
+<tr><td>Operator ID</td><td><input type="text" name="uid" size="20"></td></tr>
+<tr><td>Password</td><td><input type="password" name="pwd" size="20"></td></tr>
+<tr><td colspan="2" align="right"><input type="submit" value="Sign On"></td></tr>
+</form>
+</table></center></body></html>

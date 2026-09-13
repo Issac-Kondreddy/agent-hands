@@ -1,0 +1,44 @@
+{
+  "app_id": "meridian_core",
+  "description": "Vendor-product-level knowledge shared by every capability recorded on Meridian Core, on any tenant. Capabilities discover their own business outcomes; the profile carries the runtime conditions the product itself produces.",
+  "signed_on_marker": {
+    "role_visible": {"anchor_id": "signed_on_menu", "role": "link", "name": "Member Lookup", "frame": ["menu"]}
+  },
+  "conditions": [
+    {
+      "rule_id": "maintenance_notice", "kind": "recoverable",
+      "match": {"text_pattern": "System Notice"},
+      "response": {"kind": "dismiss", "max_attempts": 2,
+                   "dismiss_target": {"anchor_id": "ack_button", "role": "button", "name": "Acknowledge"}},
+      "description": "Once-per-session maintenance interstitial; acknowledge and continue"
+    },
+    {
+      "rule_id": "session_expired", "kind": "recoverable",
+      "match": {"text_pattern": "Session Expired"},
+      "response": {"kind": "run_recovery", "recovery_block": "re_signon", "resume_from_step": "@after_signon", "max_attempts": 1},
+      "description": "Operator session timed out; sign on again and resume the flow from its first post-sign-on step"
+    },
+    {
+      "rule_id": "signed_off", "kind": "hard_failure",
+      "match": {"text_pattern": "Invalid operator credentials"},
+      "response": {"kind": "fail", "outcome_code": "AUTH_FAILED"},
+      "description": "Sign-on rejected — credentials are wrong; a person must fix configuration"
+    }
+  ],
+  "recovery_blocks": {
+    "re_signon": [
+      {"step_id": "rs_return", "action": "click",
+       "target": {"anchor_id": "return_to_signon", "role": "link", "name": "Return to Sign On"},
+       "expect": {"role_visible": {"anchor_id": "sign_on_button", "role": "button", "name": "Sign On"}}},
+      {"step_id": "rs_user", "action": "type", "risk": "reversible",
+       "target": {"anchor_id": "operator_id_input", "role": "textbox", "name": "Operator ID", "label": "Operator ID"},
+       "value": "${secret:MERIDIAN_DEMO_USER}"},
+      {"step_id": "rs_pass", "action": "type", "risk": "reversible",
+       "target": {"anchor_id": "password_input", "role": "textbox", "name": "Password", "label": "Password"},
+       "value": "${secret:MERIDIAN_DEMO_PASS}"},
+      {"step_id": "rs_submit", "action": "click", "risk": "reversible",
+       "target": {"anchor_id": "sign_on_button", "role": "button", "name": "Sign On"},
+       "expect": {"role_visible": {"anchor_id": "signed_on_menu", "role": "link", "name": "Member Lookup", "frame": ["menu"]}}}
+    ]
+  }
+}

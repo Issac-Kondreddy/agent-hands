@@ -1,0 +1,11 @@
+{% extends "_base_main.html" %}{% set title = t.labels.lookup_menu %}
+{% block body %}
+{% if error %}<table cellpadding="6" bgcolor="#fff4f4" border="1" bordercolor="#b00000"><tr><td>
+<font color="#b00000"><b>{{ error }}</b></font></td></tr></table><br>{% endif %}
+<form method="post" action="/t/{{ tid }}/members">
+<table cellpadding="4">
+<tr><td>{{ t.labels.member }}:</td><td><input type="text" name="mno" size="12" value="{{ mno or '' }}"></td>
+<td><input type="submit" value="{{ t.labels.search_btn }}"></td></tr>
+</table></form>
+<font size="1" color="#666">Enter the numeric {{ t.labels.member|lower }} exactly as printed on the member card.</font>
+{% endblock %}

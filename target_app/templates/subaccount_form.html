@@ -1,0 +1,18 @@
+{% extends "_base_main.html" %}{% set title = t.labels.open_menu ~ " - " ~ m.name %}
+{% block body %}
+{% if errors %}<table cellpadding="6" bgcolor="#fff4f4" border="1" bordercolor="#b00000"><tr><td>
+{% for e in errors %}<font color="#b00000"><b>{{ e }}</b></font><br>{% endfor %}</td></tr></table><br>{% endif %}
+<form method="post" action="/t/{{ tid }}/members/{{ mno }}/subaccount/new">
+<table cellpadding="4">
+<tr><td>{{ t.labels.member }}:</td><td>{{ mno }} &nbsp; ({{ m.name }})</td></tr>
+<tr><td>Account Type:</td><td><select name="kind">
+  <option value="savings" {% if kind=='savings' %}selected{% endif %}>{{ t.labels.savings }}</option>
+  <option value="club" {% if kind=='club' %}selected{% endif %}>Holiday Club</option>
+  <option value="money" {% if kind=='money' %}selected{% endif %}>Money Market</option>
+</select></td></tr>
+<tr><td>{{ t.labels.nickname }}:</td><td><input type="text" name="nick" size="24" value="{{ nick or '' }}"></td></tr>
+<tr><td>{{ t.labels.deposit }}:</td><td>$ <input type="text" name="dep" size="10" value="{{ dep or '' }}"> <font size="1" color="#666">(minimum $25.00)</font></td></tr>
+<tr><td></td><td><input type="submit" value="Continue"> &nbsp;
+<input type="button" value="Cancel" onclick="location.href='/t/{{ tid }}/members/{{ mno }}'"></td></tr>
+</table></form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "_base_main.html" %}{% set title = "Sub-Account Opened" %}
+{% block body %}
+<table cellpadding="6" bgcolor="#eefbee" border="1" bordercolor="#2a8a2a"><tr><td>
+<font color="#2a8a2a" size="3"><b>Confirmation</b></font><br>
+The sub-account has been opened successfully.</td></tr></table><br>
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#ccc">
+<tr><td><b>New Account Number</b></td><td>{{ new_no }}</td></tr>
+<tr><td><b>{{ t.labels.member }}</b></td><td>{{ mno }} ({{ m.name }})</td></tr>
+<tr><td><b>{{ t.labels.nickname }}</b></td><td>{{ p.nick }}</td></tr>
+<tr><td><b>{{ t.labels.deposit }}</b></td><td>${{ p.dep }}</td></tr>
+</table><br>
+<form method="get" action="/t/{{ tid }}/members/{{ mno }}"><input type="submit" value="Return to Member"></form>
+{% endblock %}

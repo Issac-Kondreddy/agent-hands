@@ -1,0 +1,16 @@
+{% extends "_base_main.html" %}{% set title = "Review New Sub-Account" %}
+{% block body %}
+<table cellpadding="6" bgcolor="#fffbe0" border="1" bordercolor="#c89000"><tr><td>
+<b>Please review before finalizing.</b> Opening a sub-account posts to the core ledger and cannot be undone from this screen.
+</td></tr></table><br>
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#ccc">
+<tr><td><b>{{ t.labels.member }}</b></td><td>{{ mno }} ({{ m.name }})</td></tr>
+<tr><td><b>Account Type</b></td><td>{% if p.kind=='savings' %}{{ t.labels.savings }}{% elif p.kind=='club' %}Holiday Club{% else %}Money Market{% endif %}</td></tr>
+<tr><td><b>{{ t.labels.nickname }}</b></td><td>{{ p.nick }}</td></tr>
+<tr><td><b>{{ t.labels.deposit }}</b></td><td>${{ p.dep }}</td></tr>
+</table><br>
+<table cellpadding="4"><tr>
+<td><form method="post" action="/t/{{ tid }}/members/{{ mno }}/subaccount/review"><input type="submit" value="{{ t.labels.confirm_btn }}"></form></td>
+<td><form method="get" action="/t/{{ tid }}/members/{{ mno }}/subaccount/new"><input type="submit" value="Back"></form></td>
+</tr></table>
+{% endblock %}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "tenant_id": "harbor",
+  "app_id": "meridian_core",
+  "entry_point": "http://127.0.0.1:5055/t/harbor/",
+  "anchors": {
+    "member_number_textbox": {"name": "Customer ID", "label": "Customer ID"},
+    "search_button": {"name": "Find"},
+    "member_lookup_link": {"name": "Customer Inquiry"},
+    "signed_on_menu": {"name": "Customer Inquiry"},
+    "regular_savings_current_balance_cell": {"table_cell": {"row_header": "Statement Savings", "row_header_column": "Account Type", "column_header": "Current Balance"}},
+    "expect_member_number_textbox": {"name": "Customer ID"}
+  },
+  "text_substitutions": {
+    "Member Lookup": "Customer Inquiry",
+    "Member Number": "Customer ID",
+    "Regular Savings": "Statement Savings"
+  },
+  "notes": [
+    "Harbor Point Bank runs Meridian Core v7.4 with relabelled member terminology and a different savings product name.",
+    "Flow is identical to the base tenant; only captions differ, so an overlay (not a re-recording) is the right tool."
+  ]
+}

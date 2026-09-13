@@ -1,0 +1,21 @@
+{% extends "_base_main.html" %}{% set title = "Member Detail" %}
+{% block body %}
+<table cellpadding="4" cellspacing="0">
+<tr><td><b>{{ t.labels.member }}:</b></td><td>{{ mno }}</td>
+    <td width="30"></td><td><b>Status:</b></td><td>{{ m.status }}</td></tr>
+<tr><td><b>Name:</b></td><td>{{ m.name }}</td>
+    <td></td><td><b>Member Since:</b></td><td>{{ m.since }}</td></tr>
+</table><br>
+<font color="{{ t.color }}"><b>Accounts</b></font>
+<table border="1" cellpadding="4" cellspacing="0" bordercolor="#ccc" width="520">
+<tr bgcolor="#eee"><td><b>Account Type</b></td><td><b>Account Number</b></td><td align="right"><b>Current Balance</b></td></tr>
+{% for a in m.accounts %}
+<tr><td>{% if a.type == 'savings' %}{{ t.labels.savings }}{% else %}Share Draft Checking{% endif %}</td>
+<td>{{ a.number }}</td><td align="right">${{ a.balance }}</td></tr>
+{% endfor %}
+</table><br>
+<table cellpadding="4"><tr>
+<td><form method="get" action="/t/{{ tid }}/members/{{ mno }}/subaccount/new"><input type="submit" value="{{ t.labels.open_menu }}"></form></td>
+<td><form method="get" action="/t/{{ tid }}/members"><input type="submit" value="New {{ t.labels.lookup_menu }}"></form></td>
+</tr></table>
+{% endblock %}
